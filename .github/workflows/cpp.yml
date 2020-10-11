@@ -16,10 +16,10 @@ jobs:
          run: |
             cd build
             cmake -G "Visual Studio 16 2019" ..
-            cmake --build . --target install --config {{ matrix.build_type }}
+            cmake --build . --target install --config ${{ matrix.build_type }}
          shell: bash
       -  name: Test
-         run: ctest -C {{ matrix.build_type }}
+         run: ctest -C ${{ matrix.build_type }}
          shell: bash
          env:
             CTEST_OUTPUT_ON_FAILURE: 1
