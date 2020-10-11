@@ -2,12 +2,13 @@ name: CI
 on:
    push: null
 jobs:
-   build-windows-vc2019:
-      runs-on: windows-2019
+   build-windows:
+      runs-on: ${{ matrix.build_type }}
       strategy:
         fail-fast: false
         matrix:
           build_type: ["Debug", "Release"]
+          os: ["windows-2019", "windows-2016"]
       steps:
       -  uses: actions/checkout@v1
       -  name: Setup 
@@ -16,7 +17,7 @@ jobs:
       -  name: Compile
          run: |
             cd build
-            cmake -G "Visual Studio 16 2019" ..
+            cmake ..
             cmake --build . --target install --config ${{ matrix.build_type }}
          shell: bash
       -  name: Test
