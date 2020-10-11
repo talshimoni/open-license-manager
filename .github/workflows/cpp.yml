@@ -9,7 +9,7 @@ jobs:
           build_type: ["Debug", "Release"]
       steps:
       -  uses: actions/checkout@v1
-      -  name: Setup Env
+      -  name: Setup 
          shell: bash
          run: echo "BOOST_ROOT=$BOOST_ROOT_1_72_0" >> $GITHUB_ENV
       -  name: Compile
@@ -19,7 +19,9 @@ jobs:
             cmake --build . --target install --config ${{ matrix.build_type }}
          shell: bash
       -  name: Test
-         run: ctest -C ${{ matrix.build_type }}
+         run: |
+            cd build 
+            ctest -C ${{ matrix.build_type }}
          shell: bash
          env:
             CTEST_OUTPUT_ON_FAILURE: 1
