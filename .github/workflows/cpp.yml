@@ -1,22 +1,26 @@
 name: CI
-
-on: 
-  push:
-
+on:
+   push: null
 jobs:
-  build-windows-vc2019:
-    runs-on: windows-2019
-    steps:
-    - uses: actions/checkout@v1
-    - name: Setup Boost (Windows / Linux latest)
-      shell: bash
-      run: echo "BOOST_ROOT=$BOOST_ROOT_1_72_0" >> $GITHUB_ENV
-    - name: Compile
-      run: |
-        cd build
-        cmake -G "Visual Studio 16 2019" ..
-        cmake --build . --target install --config Debug
-      shell: bash
-    - name: Test
-      run: ctest -C Release
-      shell: bash
+   build-windows-vc2019:
+      runs-on: windows-2019
+      strategy:
+        matrix:
+          build_type: ["Debug", "Release"]
+      steps:
+      -  uses: actions/checkout@v1
+      -  name: Setup Env
+         shell: bash
+         run: echo "BOOST_ROOT=$BOOST_ROOT_1_72_0" >> $GITHUB_ENV
+      -  name: Compile
+         run: |
+            cd build
+            cmake -G "Visual Studio 16 2019" ..
+            cmake --build . --target install --config {{ matrix.build_type }}
+         shell: bash
+      -  name: Test
+         run: ctest -C {{ matrix.build_type }}
+         shell: bash
+         env:
+            CTEST_OUTPUT_ON_FAILURE: 1
+            VIRTUAL_ENV: VM
