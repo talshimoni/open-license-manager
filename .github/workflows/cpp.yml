@@ -5,6 +5,7 @@ jobs:
    build-windows-vc2019:
       runs-on: windows-2019
       strategy:
+        fail-fast: false
         matrix:
           build_type: ["Debug", "Release"]
       steps:
