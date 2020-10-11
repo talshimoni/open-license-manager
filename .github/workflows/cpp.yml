@@ -1,9 +1,9 @@
 name: CI
 on:
-   push: null
+   push: 
 jobs:
    build-windows:
-      runs-on: ${{ matrix.build_type }}
+      runs-on: ${{ matrix.os }}
       strategy:
         fail-fast: false
         matrix:
